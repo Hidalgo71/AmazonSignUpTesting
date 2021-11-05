@@ -11,10 +11,10 @@ public class signup
         chDCap.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
         chDCap.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
         System.setProperty("webdriver.chrome.driver", "D:\\Docs\\Drivers\\chromedriver.exe");
-        WebDriver chDriver = new ChromeDriver();
-        chDriver.get("https://www.amazon.com.tr");
-        chDriver.manage().deleteAllCookies();
+        WebDriver amzDriver = new ChromeDriver();
+        amzDriver.get("https://www.amazon.com.tr");
+        amzDriver.manage().deleteAllCookies();
 
-        
+
     }
 }
