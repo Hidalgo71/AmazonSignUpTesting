@@ -5,11 +5,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.io.IOException;
+import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -37,16 +38,55 @@ public class signup
         signUpLog.info("Page Opened, cookies deleted");
 
         WebDriverWait expW = new WebDriverWait(amzDriver, 3);
+        amzDriver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         amzDriver.findElement(By.id("sp-cc-accept")).click();                                           //Accept Cookies
 
         Actions amzAct = new Actions(amzDriver);
         amzAct.moveToElement(amzDriver.findElement(By.id("nav-link-accountList"))).build().perform();   //Mouse over for signin btn
-        expW.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-flyout-accountList")));
         WebElement cursorMove = amzDriver.findElement(By.className("nav-a"));
-        amzAct.moveToElement(amzDriver.findElement(By.className("nav-a"))).click().build().perform();
-        //amzDriver.f
+        expW.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-flyout-accountList")));
+        amzAct.moveToElement(amzDriver.findElement(By.xpath("//*[@id=\"nav-flyout-ya-newCust\"]/a"))).click().build().perform();
+        signUpLog.info("Sign Up button clicked.");
 
+        Set<String> parWin = amzDriver.getWindowHandles();
+        Set<String> s = amzDriver.getWindowHandles();
+        for (String chWindow : s)
+        {
+            if (!parWin.equals(chWindow))
+            {
+                amzDriver.switchTo().window(chWindow);
+            }
+        }
+        signUpLog.info("Switched new window.");
+        //expW.until(ExpectedConditions.visibilityOfElementLocated(By.id("ap_customer_name")));
 
+        amzDriver.findElement(By.id("ap_customer_name")).sendKeys("Kobe Bryant");
+        amzDriver.findElement(By.id("ap_email")).sendKeys("testSel7171@mail.com");
+        amzDriver.findElement(By.id("ap_password")).sendKeys("123321");
+        amzDriver.findElement(By.id("ap_password_check")).sendKeys("123321");
+        signUpLog.info("User info entered");
 
+        String signTitle = amzDriver.getTitle();
+        amzDriver.findElement(By.id("continue")).click();
+        for (String chWindow : s)
+        {
+            if (!parWin.equals(chWindow))
+            {
+                amzDriver.switchTo().window(chWindow);
+            }
+        }
+        String testTitle = amzDriver.getTitle();
+        if (Objects.equals(signTitle, testTitle))
+        {
+            System.out.println("Test Failed.");
+            System.out.println(amzDriver.findElement(By.xpath("//*[@id=\"auth-password-mismatch-alert\"]/div/div")).getText());
+            signUpLog.info("Test Failed.");
+        }
+        else
+        {
+            System.out.println("Test Completed successfully.");
+            signUpLog.info("Test Completed successfully");
+
+        }
     }
 }
