@@ -61,9 +61,9 @@ public class signup
         //expW.until(ExpectedConditions.visibilityOfElementLocated(By.id("ap_customer_name")));
 
         amzDriver.findElement(By.id("ap_customer_name")).sendKeys("Kobe Bryant");
-        amzDriver.findElement(By.id("ap_email")).sendKeys("testSel7171@mail.com");
-        amzDriver.findElement(By.id("ap_password")).sendKeys("123321");
-        amzDriver.findElement(By.id("ap_password_check")).sendKeys("123321");
+        amzDriver.findElement(By.id("ap_email")).sendKeys("@mail.com");
+        amzDriver.findElement(By.id("ap_password")).sendKeys("");
+        amzDriver.findElement(By.id("ap_password_check")).sendKeys("");
         signUpLog.info("User info entered");
 
         String signTitle = amzDriver.getTitle();
